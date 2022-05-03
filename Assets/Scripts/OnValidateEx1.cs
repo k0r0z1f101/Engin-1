@@ -27,9 +27,9 @@ public class OnValidateEx1 : MonoBehaviour
         for(int i = 0; i < numberOfCubes; ++i)
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.SetParent(cubesParent.transform);
             cube.transform.position = new Vector3(0,i,0);
-            cube.transform.localScale = new Vector3(2*i,-1.0f,2*i);
+            cube.transform.localScale = new Vector3(2*(i + 1),-1.0f,2*(i + 1));
+            cube.transform.SetParent(cubesParent.transform);
 
         }
     }
@@ -38,7 +38,8 @@ public class OnValidateEx1 : MonoBehaviour
     {
         if(cubesParent != null)
         {
-            DestroyImmediate(cubesParent);
+            Destroy(cubesParent);
+            cubesParent = null;
         }
     }
 
