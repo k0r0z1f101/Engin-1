@@ -153,7 +153,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wallsHeight: 0
-  img: {fileID: 2800000, guid: a4cf773ad53c64ee0b542ba6940e52f8, type: 3}
 --- !u!4 &992233796
 Transform:
   m_ObjectHideFlags: 0
