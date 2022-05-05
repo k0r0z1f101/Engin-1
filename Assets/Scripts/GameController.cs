@@ -41,8 +41,14 @@ public class GameController : MonoBehaviour
     {
         Debug.Log(canvasParent.name);
         levelImg = new Texture2D(128, 128);
-        Renderer renderer = GetComponent<Renderer>();
-        renderer.material.mainTexture = levelImg;
+        // Renderer renderer = levelImg.GetComponent<Renderer>();
+        // renderer.material.mainTexture = levelImg;
+        levelImg = Resources.Load("imageToConvert", typeof(Texture2D)) as Texture2D;
+        Debug.Log(levelImg.width);
+
+        // TextAsset imageAsset = ;
+        // tex.LoadImage(imageAsset.bytes);
+        // GetComponent<Renderer>().material.mainTexture = tex;
     }
 
     void Start()
