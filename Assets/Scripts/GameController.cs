@@ -19,36 +19,40 @@ public class GameController : MonoBehaviour
     private List<Vector2> convertedPix;
     [Header("height of the walls")]
     [SerializeField]
-    private int wallsHeight;
-    private GameObject canvasParent;
-    private Canvas canvasObj;
+    private float wallsHeight;
     private Texture2D levelImg;
+    [Header("images to convert to levels")]
+    [SerializeField]
+    private List<Texture2D> lvlImages;
+    [Header("level to load (if too high load last level)")]
+    [SerializeField]
+    private int levelToLoad = 0;
+    private GameObject ground;
+    [Header("colored walls if true")]
+    [SerializeField]
+    private bool colorMode = false;
     
-
-    void CreateCanvas()
-    {
-        canvasParent = new GameObject();
-        canvasParent.name = "Canvas";
-        canvasParent.AddComponent<Canvas>();
-        canvasObj = canvasParent.GetComponent<Canvas>();
-        canvasObj.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvasParent.AddComponent<CanvasScaler>();
-        canvasParent.AddComponent<GraphicRaycaster>();
-    }
-
-    //convpixtovec method
     void ConvPixToVec()
     {
-        Debug.Log(canvasParent.name);
-        levelImg = new Texture2D(128, 128);
-        // Renderer renderer = levelImg.GetComponent<Renderer>();
-        // renderer.material.mainTexture = levelImg;
-        levelImg = Resources.Load("imageToConvert", typeof(Texture2D)) as Texture2D;
-        Debug.Log(levelImg.width);
+        convertedPix = new List<Vector2>();
+        levelImg = new Texture2D(0, 0);
+        levelImg = lvlImages[levelToLoad];
+        int nbrOfRows = levelImg.width;
+        int nbrOfCols = levelImg.height;
 
-        // TextAsset imageAsset = ;
-        // tex.LoadImage(imageAsset.bytes);
-        // GetComponent<Renderer>().material.mainTexture = tex;
+        Color whiteColor = new Color(1.0f,1.0f,1.0f,1.0f);
+        for(int i = 0; i < nbrOfRows; ++i)
+        {
+            for(int j = 0; j < nbrOfCols; ++j)
+            {
+                Color pixColor = levelImg.GetPixel(i, j);
+                if(pixColor != whiteColor)
+                {
+                    convertedPix.Add(new Vector2(i, j));
+                }
+            }
+        }
+
     }
 
     void Start()
@@ -57,8 +61,8 @@ public class GameController : MonoBehaviour
     }
     void Awake()
     {
-        CreateCanvas();
-        // Debug.Log("assasas");
+        ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        ground.GetComponent<Renderer>().material.color = Color.red;
     }
 
     void Update()
@@ -68,38 +72,53 @@ public class GameController : MonoBehaviour
 
     void OnValidate()
     {
-        if(!canvasParent) return;
+        if(ground){
+            wallsHeight = Mathf.Clamp(wallsHeight,0,10);
 
-        wallsHeight = Mathf.Clamp(wallsHeight,0,10);
+            if(!colorMode)
+                ConvPixToVec();
 
-        foreach (Transform child in canvasParent.transform) 
-        {
-            GameObject.Destroy(child.gameObject);
+            Destroy(ground);
+            ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            ground.GetComponent<Renderer>().material.color = Color.red;
+
+            DrawLevel();
         }
-
-        ConvPixToVec();
     }
 
-    static bool GetImageSize(Texture2D asset, out int width, out int height) {
-        if (asset != null) {
-            string assetPath = AssetDatabase.GetAssetPath(asset);
-            TextureImporter importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
-    
-            if (importer != null) {
-                object[] args = new object[2] { 0, 0 };
-                MethodInfo mi = typeof(TextureImporter).GetMethod("GetWidthAndHeight", BindingFlags.NonPublic | BindingFlags.Instance);
-                mi.Invoke(importer, args);
-    
-                width = (int)args[0];
-                height = (int)args[1];
-    
-                return true;
+    void  DrawLevel()
+    {
+        ground.transform.localScale = new Vector3(levelImg.width * 0.1f, 0.01f, levelImg.height * 0.1f);
+        ground.transform.position = new Vector3(levelImg.width * 0.5f, 0.0f, levelImg.height * 0.5f);
+        if(!colorMode)
+        {
+            for(int i = 0; i < convertedPix.Count; ++i)
+            {
+                GameObject newBlock = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                newBlock.transform.localScale = new Vector3(1.0f, wallsHeight, 1.0f);
+                newBlock.transform.position = new Vector3(convertedPix[i].x, (wallsHeight * 0.5f) + 0.01f, convertedPix[i].y);
+                newBlock.transform.SetParent(ground.transform);
             }
         }
-    
-        height = width = 0;
-        return false;
+        else
+        {
+            levelImg = new Texture2D(0, 0);
+            levelImg = lvlImages[levelToLoad];
+            int nbrOfRows = levelImg.width;
+            int nbrOfCols = levelImg.height;
+
+            for(int i = 0; i < nbrOfRows; ++i)
+            {
+                for(int j = 0; j < nbrOfCols; ++j)
+                {
+                    Color pixColor = levelImg.GetPixel(i, j);
+                    GameObject newBlock = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    newBlock.transform.localScale = new Vector3(1.0f, wallsHeight, 1.0f);
+                    newBlock.transform.position = new Vector3(i, (wallsHeight * 0.5f) + 0.01f, j);
+                    newBlock.GetComponent<Renderer>().material.color = pixColor;
+                    newBlock.transform.SetParent(ground.transform);
+                }
+            }
+        }
     }
-
-
 }
