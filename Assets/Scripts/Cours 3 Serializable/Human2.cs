@@ -6,7 +6,7 @@ using UnityEngine;
 public class Human2 : LivingBeing2
 {
     [SerializeField]
-    private string _name;
+    protected string _name;
 
     public string getName()
     {

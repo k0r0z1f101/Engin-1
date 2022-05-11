@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LivingBeing : Character
+public class LivingBeing
 {
     private int _lifePoint;
 

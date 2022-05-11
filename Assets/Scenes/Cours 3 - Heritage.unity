@@ -345,4 +345,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54943cb29eea89d039835e21ea10f12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charac: {fileID: 0}
+  _weapon:
+    name: Jambon
+    damage: 14

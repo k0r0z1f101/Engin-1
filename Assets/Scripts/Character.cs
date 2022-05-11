@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    public Magician charac;
+    public Magician _charac;
+    [SerializeField]
+    private Weapon _weapon;
     // Start is called before the first frame update
     void Start()
     {
-        charac = new Magician(10, "roger", 12);
-        charac.DisplayStats();
+        _charac = new Magician(10, "roger", 12);
+        _charac.DisplayStats();
+        // _weapon = new Weapon("Magic Staff", 100);
+        _weapon.PrintWeaponStats();
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class LivingBeing2 : Character2
 {
     [SerializeField]
-    private int _lifePoint;
+    protected int _lifePoint;
 
     public int getLife()
     {

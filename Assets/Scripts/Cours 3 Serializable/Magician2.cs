@@ -6,7 +6,7 @@ using UnityEngine;
 public class Magician2 : Human2
 {
     [SerializeField]
-    private int _mana;
+    protected int _mana;
 
     public void DisplayStats()
     {
