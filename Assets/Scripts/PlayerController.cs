@@ -19,6 +19,17 @@ public class PlayerController : MonoBehaviour
   private InputAction runAction;
   private float runValue;
   private bool isRunning;
+
+  //Jump Idle
+  private InputAction jumpAction;
+  private float jumpValue;
+  [SerializeField]
+  private bool isJumping;
+
+  //Jump Running
+  private InputAction jumpRunAction;
+  private float jumpRunValue;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -27,6 +38,8 @@ public class PlayerController : MonoBehaviour
       animator = transform.GetChild(0).GetComponent<Animator>();
       walkAction = playerInput.actions["Walk"];
       runAction = playerInput.actions["Run"];
+      jumpAction = playerInput.actions["Jump Idle"];
+      jumpRunAction = playerInput.actions["Jump Running"];
     }
 
     // Update is called once per frame
@@ -36,6 +49,7 @@ public class PlayerController : MonoBehaviour
       GetInputValues();
       SetRotation();
       Move();
+      Jump();
       SetStates();
     }
 
@@ -77,6 +91,13 @@ public class PlayerController : MonoBehaviour
         isRunning = true;
       else
         isRunning = false;
+
+      jumpValue = jumpAction.ReadValue<float>();
+      if(jumpValue == 1)
+        isJumping = true;
+      else
+        isJumping = false;
+      // Debug.Log(jumpValue);
     }
 
     void SetRotation()
@@ -89,6 +110,29 @@ public class PlayerController : MonoBehaviour
           transform.rotation = Quaternion.Lerp(transform.rotation, rot, rotSpeed * Time.deltaTime * 5.0f);
         else
           transform.rotation = Quaternion.Lerp(transform.rotation, rot, rotSpeed * Time.deltaTime);
+      }
+    }
+
+    void Jump()
+    {
+      if(isJumping && !isMoving)
+      {
+        animator.SetBool("isJumpingIdle", true);
+      }
+      else if(!isJumping) {
+        animator.SetBool("isJumpingIdle", false);
+        animator.SetBool("isJumpingRunning", false);
+        animator.SetBool("isJumpingWalking", false);
+      }
+
+      if(isJumping && isRunning)
+      {
+        animator.SetBool("isJumpingRunning", true);
+      }
+
+      if(isJumping && isMoving && !isRunning)
+      {
+        animator.SetBool("isJumpingWalking", true);
       }
     }
 }
