@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
   [Header("Vitesse de marche")]
   [SerializeField]
   private int walkSpeed;
-  private Vector2 v2;
+  private Vector2 walkValue;
   private bool isWalking;
   private bool isMoving;
 
@@ -65,10 +65,7 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
-      if(runValue == 1)
-        controller.SimpleMove(new Vector3(v2.x, transform.position.y, v2.y) * walkSpeed * 5.0f);
-      else
-        controller.SimpleMove(new Vector3(v2.x, transform.position.y, v2.y) * walkSpeed);
+      controller.SimpleMove(new Vector3(walkValue.x, transform.position.y, walkValue.y) * walkSpeed * (isRunning ? 5.0f : 1.0f));
     }
 
     void SetStates()
@@ -86,9 +83,9 @@ public class PlayerController : MonoBehaviour
 
     void GetInputValues()
     {
-      v2 = walkAction.ReadValue<Vector2>();
+      walkValue = walkAction.ReadValue<Vector2>();
 
-      if(v2.magnitude > 0)
+      if(walkValue.magnitude > 0)
         isMoving = true;
       else
         isMoving = false;
@@ -110,11 +107,8 @@ public class PlayerController : MonoBehaviour
     {
       if(isMoving)
       {
-        Quaternion rot = Quaternion.LookRotation(new Vector3(v2.x, 0, v2.y));
-        if(isRunning)
-          transform.rotation = Quaternion.Lerp(transform.rotation, rot, rotSpeed * Time.deltaTime * 5.0f);
-        else
-          transform.rotation = Quaternion.Lerp(transform.rotation, rot, rotSpeed * Time.deltaTime);
+        Quaternion rot = Quaternion.LookRotation(new Vector3(walkValue.x, 0, walkValue.y));
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, rotSpeed * Time.deltaTime * (isRunning ? 5.0f : 1.0f));
       }
     }
 
