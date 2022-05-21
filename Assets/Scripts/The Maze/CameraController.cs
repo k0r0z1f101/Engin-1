@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+  //GameObject to follow
   [SerializeField]
   private GameObject player;
 
-    // Update is called once per frame
     void LateUpdate()
     {
       transform.position = player.transform.position;
