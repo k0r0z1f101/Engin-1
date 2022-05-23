@@ -32,15 +32,11 @@ public class PlayerController : MonoBehaviour
   private float runValue;
   private bool isRunning;
 
-  //Jump Idle
+  //Jump
   private InputAction jumpAction;
   private float jumpValue;
   private bool jumpTrigger;
   private bool isJumping;
-
-  //Jump Running
-  private InputAction jumpRunAction;
-  private float jumpRunValue;
   [Header("Force du saut")]
   [SerializeField]
   private float jumpStrength = 1.0f;
@@ -50,7 +46,7 @@ public class PlayerController : MonoBehaviour
   [SerializeField]
   private float gravity;
   private float currentFallingSpeed = 0.0f;
-  private float maxFallingSpeed = 0.9f;
+  private float maxFallingSpeed = 55.0f;
 
     // Start is called before the first frame update
     void Awake()
@@ -60,40 +56,33 @@ public class PlayerController : MonoBehaviour
       animator = transform.GetChild(0).GetComponent<Animator>();
       walkAction = playerInput.actions["Walk"];
       runAction = playerInput.actions["Run"];
-      jumpAction = playerInput.actions["Jump Idle"];
-      jumpRunAction = playerInput.actions["Jump Running"];
+      jumpAction = playerInput.actions["Jump"];
     }
 
     void Update()
     {
       GetInputValues();
       SetRotation();
-      Debug.Log(controller.isGrounded);
-      Debug.Log(currentFallingSpeed);
-      Debug.Log(Time.time);
-      if(controller.isGrounded)
-      {
-        currentFallingSpeed = 0.0f;
-        isJumping = false;
-      }
-      else
-        ApplyGravity();
-      Jump();
-      Move();
+      if(!isJumping)
+        ApplyGravity(); //apply gravity before move
+      Move(); //position transformation
       SetStates();
     }
 
     void Move()
     {
-      controller.Move(new Vector3(walkValue.x, isJumping ? jumpStrength : 0.0f, walkValue.y) * walkSpeed * (isRunning ? 2.5f : 1.0f) * Time.deltaTime);
-      controller.SimpleMove(new Vector3(0.0f, 0.0f, 0.0f));
+      float walkMod = (!controller.isGrounded ? (isRunning ? jumpStrength * 2.5f : jumpStrength) : 1.0f);
+      float newX = walkValue.x * walkMod;
+      float newY = (isJumping && transform.position.y < jumpStrength ? 3.0f : 0.0f) - currentFallingSpeed;
+      float newZ = walkValue.y * walkMod;
+
+      controller.Move(new Vector3(newX, newY, newZ) * walkSpeed * (isRunning ? 2.5f : 1.0f) * Time.deltaTime);
     }
 
     void ApplyGravity()
     {
-      currentFallingSpeed += gravity * Time.deltaTime;
+      currentFallingSpeed += gravity * Time.deltaTime * 0.5f;
       currentFallingSpeed = currentFallingSpeed > maxFallingSpeed ? maxFallingSpeed : currentFallingSpeed;
-      controller.Move(new Vector3(0.0f, -currentFallingSpeed, 0.0f));
     }
 
     void SetStates()
@@ -107,6 +96,21 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("IsRunning", true);
       else
         animator.SetBool("IsRunning", false);
+
+      if(isJumping && controller.isGrounded)
+      {
+        animator.SetBool("IsJumpingWalking", false);
+        animator.SetBool("IsJumpingRunning", false);
+      }
+
+      if(controller.isGrounded)
+        currentFallingSpeed = 0.0f;
+
+      if(isJumping && transform.position.y > jumpStrength)
+        isJumping = false;
+
+      if(jumpTrigger && isMoving)
+        Jump(); //trigger animation and jump
     }
 
     void GetInputValues()
@@ -117,8 +121,11 @@ public class PlayerController : MonoBehaviour
       runValue = runAction.ReadValue<float>();
       isRunning = runValue == 1 ? true : false;
 
-      jumpValue = jumpAction.ReadValue<float>();
-      jumpTrigger = jumpValue == 1 ? true : false;
+      if(!isJumping)
+      {
+        jumpValue = jumpAction.ReadValue<float>();
+        jumpTrigger = jumpValue == 1 ? true : false;
+      }
     }
 
     void SetRotation()
@@ -132,11 +139,12 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-      if(jumpTrigger && isMoving && !isRunning)
-      {
+      isJumping = true;
+      jumpTrigger = false;
+
+      if(isRunning)
+        animator.SetTrigger("jumpRunningTrigger");
+      else
         animator.SetTrigger("jumpTrigger");
-        isJumping = true;
-        jumpTrigger = false;
-      }
     }
 }

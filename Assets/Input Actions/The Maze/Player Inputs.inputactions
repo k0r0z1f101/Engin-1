@@ -24,18 +24,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Jump Idle",
+                    "name": "Jump",
                     "type": "Button",
                     "id": "1a0f43a9-8201-4851-aa4e-4ba41de3a46a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Jump Running",
-                    "type": "Button",
-                    "id": "d494cc5d-f52c-4d90-a125-f558a546e04f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -171,18 +162,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump Idle",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "78a19b57-e08c-4934-b07b-969b52a8d5f2",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump Running",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
