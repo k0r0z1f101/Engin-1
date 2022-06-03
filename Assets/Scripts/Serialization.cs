@@ -7,7 +7,7 @@ public class Serialization : MonoBehaviour
     [System.NonSerialized]
     public int myPublicVar = 10;
     [SerializeField]
-    int myMysteryVar = 20; //private by default
+    // int myMysteryVar = 20; //private by default
     [HideInInspector]
     public int myPublicVar2;
     // Start is called before the first frame update
