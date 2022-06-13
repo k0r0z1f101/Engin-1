@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 34186680}
   - component: {fileID: 34186685}
   - component: {fileID: 34186686}
+  - component: {fileID: 34186687}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -248,12 +249,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 34186679}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a98c9e00ecad12b48ac3bf4b99e780b, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fa94e532dd7f4e9e8f116f93a8b4d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 2.4
-  player: {fileID: 572307719}
-  speed: 1
+  appliedForce: 20
+  playerDetected: 0
+  playerInSight: 0
+  maxDistanceForDetection: 20
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!135 &34186687
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34186679}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 5.35
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &252688915
 GameObject:
   m_ObjectHideFlags: 0
@@ -673,7 +691,7 @@ GameObject:
   - component: {fileID: 572307726}
   m_Layer: 0
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -9,6 +9,6 @@ public class LayerMaskTest : MonoBehaviour
 
   void Start()
   {
-    Debug.Log(Convert.ToString(layerMask,2).PadLeft(32,'0'));
+    // Debug.Log(Convert.ToString(layerMask,2).PadLeft(32,'0'));
   }
 }
