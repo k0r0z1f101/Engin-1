@@ -1,0 +1,74 @@
+{
+    "name": "ParticleControl",
+    "maps": [
+        {
+            "name": "ParticleControl",
+            "id": "6ac5e628-ff83-4a79-bd3b-d98a06a5a7f9",
+            "actions": [
+                {
+                    "name": "Play",
+                    "type": "Button",
+                    "id": "68370993-3067-4892-b332-5fdef742e172",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Stop",
+                    "type": "Button",
+                    "id": "b2424e7f-37f7-4c0e-ba95-9e77cb1c53fc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "171b9a28-cfc0-4a75-a0a0-f14a7c462717",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c8dea830-9f6b-4520-a8d1-7241ee2a0bf4",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Play",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "94e84cd0-aeb3-4caa-a6e9-72e924fb131e",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Stop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "33cf93e5-d921-47c2-96a6-b6a1265360b1",
+                    "path": "<Keyboard>/o",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
