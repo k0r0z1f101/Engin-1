@@ -53,6 +53,15 @@ public partial class @InputParticleControl : IInputActionCollection2, IDisposabl
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Deactivate"",
+                    ""type"": ""Button"",
+                    ""id"": ""69ef54ef-79e9-4930-bcea-b69a746cbf5b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -88,6 +97,17 @@ public partial class @InputParticleControl : IInputActionCollection2, IDisposabl
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0547af95-81e1-4f56-a22c-e6f6d88ca7b9"",
+                    ""path"": ""<Keyboard>/u"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Deactivate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -99,6 +119,7 @@ public partial class @InputParticleControl : IInputActionCollection2, IDisposabl
         m_ParticleControl_Play = m_ParticleControl.FindAction("Play", throwIfNotFound: true);
         m_ParticleControl_Stop = m_ParticleControl.FindAction("Stop", throwIfNotFound: true);
         m_ParticleControl_Pause = m_ParticleControl.FindAction("Pause", throwIfNotFound: true);
+        m_ParticleControl_Deactivate = m_ParticleControl.FindAction("Deactivate", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -161,6 +182,7 @@ public partial class @InputParticleControl : IInputActionCollection2, IDisposabl
     private readonly InputAction m_ParticleControl_Play;
     private readonly InputAction m_ParticleControl_Stop;
     private readonly InputAction m_ParticleControl_Pause;
+    private readonly InputAction m_ParticleControl_Deactivate;
     public struct ParticleControlActions
     {
         private @InputParticleControl m_Wrapper;
@@ -168,6 +190,7 @@ public partial class @InputParticleControl : IInputActionCollection2, IDisposabl
         public InputAction @Play => m_Wrapper.m_ParticleControl_Play;
         public InputAction @Stop => m_Wrapper.m_ParticleControl_Stop;
         public InputAction @Pause => m_Wrapper.m_ParticleControl_Pause;
+        public InputAction @Deactivate => m_Wrapper.m_ParticleControl_Deactivate;
         public InputActionMap Get() { return m_Wrapper.m_ParticleControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -186,6 +209,9 @@ public partial class @InputParticleControl : IInputActionCollection2, IDisposabl
                 @Pause.started -= m_Wrapper.m_ParticleControlActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_ParticleControlActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_ParticleControlActionsCallbackInterface.OnPause;
+                @Deactivate.started -= m_Wrapper.m_ParticleControlActionsCallbackInterface.OnDeactivate;
+                @Deactivate.performed -= m_Wrapper.m_ParticleControlActionsCallbackInterface.OnDeactivate;
+                @Deactivate.canceled -= m_Wrapper.m_ParticleControlActionsCallbackInterface.OnDeactivate;
             }
             m_Wrapper.m_ParticleControlActionsCallbackInterface = instance;
             if (instance != null)
@@ -199,6 +225,9 @@ public partial class @InputParticleControl : IInputActionCollection2, IDisposabl
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
+                @Deactivate.started += instance.OnDeactivate;
+                @Deactivate.performed += instance.OnDeactivate;
+                @Deactivate.canceled += instance.OnDeactivate;
             }
         }
     }
@@ -208,5 +237,6 @@ public partial class @InputParticleControl : IInputActionCollection2, IDisposabl
         void OnPlay(InputAction.CallbackContext context);
         void OnStop(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnDeactivate(InputAction.CallbackContext context);
     }
 }
